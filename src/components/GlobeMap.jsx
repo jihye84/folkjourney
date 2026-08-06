@@ -96,21 +96,23 @@ export function GlobeMap({ data, onRegionSelect, selectedRegionId, accentColor =
           const el = document.createElement('div');
           const isSelected = d.id === selectedRegionId;
           el.style.cssText = `
-            color: ${isSelected ? '#fbbf24' : '#fff'};
-            font-size: ${isSelected ? '13px' : '11px'};
+            color: ${isSelected ? '#fbbf24' : 'rgba(255,255,255,0.85)'};
+            font-size: ${isSelected ? '11px' : '9.5px'};
             font-weight: ${isSelected ? '800' : '600'};
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: ${isSelected ? 'rgba(251,191,36,0.15)' : 'rgba(15,23,42,0.7)'};
-            backdrop-filter: blur(4px);
-            padding: 3px 8px;
-            border-radius: 6px;
-            border: 1px solid ${isSelected ? 'rgba(251,191,36,0.5)' : 'rgba(255,255,255,0.15)'};
+            letter-spacing: 0.03em;
+            font-family: "Plus Jakarta Sans", -apple-system, sans-serif;
+            background: ${isSelected ? 'rgba(15, 23, 42, 0.95)' : 'rgba(2, 6, 23, 0.6)'};
+            backdrop-filter: blur(6px);
+            padding: ${isSelected ? '3px 9px' : '2px 7px'};
+            border-radius: 20px;
+            border: 1px solid ${isSelected ? 'rgba(251,191,36,0.85)' : 'rgba(255,255,255,0.12)'};
+            box-shadow: ${isSelected ? '0 0 14px rgba(251,191,36,0.45)' : '0 2px 6px rgba(0,0,0,0.4)'};
             white-space: nowrap;
             transform: translate(-50%, -24px);
             pointer-events: auto;
             cursor: pointer;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-            transition: all 0.3s;
+            text-shadow: ${isSelected ? '0 0 8px rgba(251,191,36,0.5)' : '0 1px 3px rgba(0,0,0,0.7)'};
+            transition: all 0.25s ease;
           `;
           el.textContent = d.region;
           el.addEventListener('click', (e) => {
@@ -119,16 +121,16 @@ export function GlobeMap({ data, onRegionSelect, selectedRegionId, accentColor =
           });
           el.addEventListener('mouseenter', () => {
             if (!isSelected) {
-              el.style.background = `${accentColor}33`;
-              el.style.borderColor = `${accentColor}80`;
-              el.style.color = accentColor;
+              el.style.background = `${accentColor}44`;
+              el.style.borderColor = `${accentColor}a0`;
+              el.style.color = '#fff';
             }
           });
           el.addEventListener('mouseleave', () => {
             if (!isSelected) {
-              el.style.background = 'rgba(15,23,42,0.7)';
-              el.style.borderColor = 'rgba(255,255,255,0.15)';
-              el.style.color = '#fff';
+              el.style.background = 'rgba(2, 6, 23, 0.6)';
+              el.style.borderColor = 'rgba(255,255,255,0.12)';
+              el.style.color = 'rgba(255,255,255,0.85)';
             }
           });
           return el;
