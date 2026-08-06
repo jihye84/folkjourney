@@ -124,20 +124,33 @@ export function RhythmPanel({ region, onClose, autoPlayToken, togglePlayToken, o
         (step) => setCurrentStep(step)
       );
     }
-  }, [bpm]);
+  }, [bpm, region, isPlaying]);
+
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const motionProps = isMobile
+    ? { initial: { y: '100%' }, animate: { y: 0 }, exit: { y: '100%' } }
+    : { initial: { x: '100%' }, animate: { x: 0 }, exit: { x: '100%' } };
 
   return (
     <AnimatePresence>
       {region && (
         <motion.div
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '100%' }}
-          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="absolute top-0 right-0 w-full md:w-[460px] h-full bg-slate-900/85 backdrop-blur-xl border-l border-white/10 shadow-2xl flex flex-col z-10"
+          {...motionProps}
+          transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+          className="fixed bottom-0 left-0 right-0 top-auto w-full h-[52vh] md:h-full md:top-0 md:right-0 md:left-auto md:w-[460px] md:fixed bg-slate-900/95 md:bg-slate-900/85 backdrop-blur-2xl border-t md:border-t-0 md:border-l border-white/20 shadow-2xl flex flex-col z-30 rounded-t-3xl md:rounded-none overflow-hidden"
         >
+          {/* Mobile Handle Indicator */}
+          <div className="w-12 h-1 bg-white/20 rounded-full mx-auto my-1.5 md:hidden shrink-0" />
+
           {/* ── Header ── */}
-          <div className="flex justify-between items-center px-5 py-3 border-b border-white/10 shrink-0">
+          <div className="flex justify-between items-center px-4 py-2.5 md:px-5 md:py-3 border-b border-white/10 shrink-0">
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="h-8 shrink-0 flex items-center">
                 <img

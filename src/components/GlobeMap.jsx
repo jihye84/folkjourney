@@ -36,30 +36,37 @@ export function GlobeMap({ data, onRegionSelect, selectedRegionId, accentColor =
     }
   }, [selectedRegionId]);
 
+  const isMobile = windowSize.width < 768;
+
   // Smoothly rotate globe camera to center selected country whenever selectedRegionId changes
   useEffect(() => {
     if (selectedRegionId && globeEl.current && globeData.length > 0) {
       const selectedItem = globeData.find(d => d.id === selectedRegionId);
       if (selectedItem && selectedItem.lat !== undefined && selectedItem.lng !== undefined) {
         globeEl.current.pointOfView(
-          { lat: selectedItem.lat, lng: selectedItem.lng, altitude: 1.5 },
+          { lat: selectedItem.lat, lng: selectedItem.lng, altitude: isMobile ? 2.1 : 1.5 },
           1400
         );
       }
     }
-  }, [selectedRegionId, globeData]);
+  }, [selectedRegionId, globeData, isMobile]);
 
   const handleSelect = useCallback((point) => {
     onRegionSelectRef.current(point);
     if (globeEl.current) {
-      globeEl.current.pointOfView({ lat: point.lat, lng: point.lng, altitude: 1.5 }, 1000);
+      globeEl.current.pointOfView({ lat: point.lat, lng: point.lng, altitude: isMobile ? 2.1 : 1.5 }, 1000);
     }
-  }, []);
+  }, [isMobile]);
+
+  const getTransform = () => {
+    if (!selectedRegionId) return 'translate(0, 0)';
+    return isMobile ? 'translateY(-14vh)' : 'translateX(-220px)';
+  };
 
   return (
     <div
       className="absolute inset-0 z-0 bg-slate-950 transition-transform duration-700 ease-out"
-      style={{ transform: selectedRegionId ? 'translateX(-230px)' : 'translateX(0)' }}
+      style={{ transform: getTransform() }}
     >
       <Globe
         ref={globeEl}

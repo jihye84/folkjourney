@@ -83,7 +83,7 @@ export function SearchList({ data = [], onSelect, selectedId, accentColor = '#10
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="pointer-events-auto absolute bottom-14 left-0 w-[380px] max-h-[65vh] bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="pointer-events-auto absolute bottom-12 left-0 w-[calc(100vw-2rem)] sm:w-[360px] md:w-[380px] max-h-[50vh] md:max-h-[65vh] bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-40"
           >
             {/* Search Header */}
             <div className="px-4 pt-4 pb-3 border-b border-white/5 shrink-0">
