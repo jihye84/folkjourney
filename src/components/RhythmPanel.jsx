@@ -126,7 +126,12 @@ export function RhythmPanel({ region, onClose, autoPlayToken, togglePlayToken, o
     }
   }, [bpm, region, isPlaying]);
 
+  const [activeTab, setActiveTab] = useState('rhythm'); // 'rhythm' | 'story'
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+
+  useEffect(() => {
+    setActiveTab('rhythm');
+  }, [region?.id]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -144,7 +149,7 @@ export function RhythmPanel({ region, onClose, autoPlayToken, togglePlayToken, o
         <motion.div
           {...motionProps}
           transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-          className="fixed bottom-0 left-0 right-0 top-auto w-full h-[52vh] md:h-full md:top-0 md:right-0 md:left-auto md:w-[460px] md:fixed bg-slate-900/95 md:bg-slate-900/85 backdrop-blur-2xl border-t md:border-t-0 md:border-l border-white/20 shadow-2xl flex flex-col z-30 rounded-t-3xl md:rounded-none overflow-hidden"
+          className="fixed bottom-0 left-0 right-0 top-auto w-full h-[56vh] md:h-full md:top-0 md:right-0 md:left-auto md:w-[460px] md:fixed bg-slate-900/95 md:bg-slate-900/85 backdrop-blur-2xl border-t md:border-t-0 md:border-l border-white/20 shadow-2xl flex flex-col z-30 rounded-t-3xl md:rounded-none overflow-hidden"
         >
           {/* Mobile Handle Indicator */}
           <div className="w-12 h-1 bg-white/20 rounded-full mx-auto my-1.5 md:hidden shrink-0" />
@@ -170,73 +175,99 @@ export function RhythmPanel({ region, onClose, autoPlayToken, togglePlayToken, o
             </button>
           </div>
 
+          {/* ── Sub Navigation Tabs ── */}
+          <div className="flex px-4 pt-1.5 md:px-5 shrink-0 bg-slate-950/40 border-b border-white/10 gap-2">
+            <button
+              onClick={() => setActiveTab('rhythm')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold border-b-2 transition-all ${
+                activeTab === 'rhythm'
+                  ? 'text-amber-400 border-amber-500 bg-amber-500/10 rounded-t-lg'
+                  : 'text-slate-400 border-transparent hover:text-slate-200'
+              }`}
+            >
+              🥁 리듬 패턴
+            </button>
+            <button
+              onClick={() => setActiveTab('story')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold border-b-2 transition-all ${
+                activeTab === 'story'
+                  ? 'text-amber-400 border-amber-500 bg-amber-500/10 rounded-t-lg'
+                  : 'text-slate-400 border-transparent hover:text-slate-200'
+              }`}
+            >
+              📖 문화 이야기
+            </button>
+          </div>
+
           {/* ── Main Scrollable Body ── */}
-          <div className="flex-1 overflow-y-auto custom-scrollbar p-3.5 md:p-5 space-y-3.5 md:space-y-4">
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-3.5 md:p-5 space-y-3 md:space-y-3.5">
             {/* ── Full Description Summary Card ── */}
-            <div className="p-3 bg-amber-500/10 border border-amber-500/25 rounded-xl">
-              <p className="text-xs md:text-sm font-semibold text-amber-200 leading-relaxed break-keep">
+            <div className="p-2.5 md:p-3 bg-amber-500/10 border border-amber-500/25 rounded-xl shrink-0">
+              <p className="text-xs font-semibold text-amber-200 leading-relaxed break-keep">
                 {region.description}
               </p>
             </div>
 
-            {/* ── Controls: Time Sig + BPM + Play ── */}
-            <div className="flex items-center gap-2 p-2.5 bg-slate-800/50 border border-white/10 rounded-xl">
-              {/* Time Signature Badge */}
-              <div className="flex flex-col items-center px-2 py-1 bg-amber-500/10 border border-amber-500/30 rounded-lg shrink-0">
-                <span className="text-[8px] font-bold text-amber-500/70 uppercase tracking-wider">박자</span>
-                <span className="text-base font-black text-amber-400 leading-tight">{region.timeSignature}</span>
-              </div>
-              <div className="w-px h-6 bg-white/10" />
-              <div className="flex flex-col flex-1 px-1 min-w-0">
-                <div className="flex justify-between items-center mb-0.5">
-                  <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider">BPM</span>
-                  <span className="text-[10px] font-mono font-bold text-amber-400">{bpm}</span>
+            {activeTab === 'rhythm' ? (
+              <>
+                {/* ── Controls: Time Sig + BPM + Play ── */}
+                <div className="flex items-center gap-2 p-2 bg-slate-800/50 border border-white/10 rounded-xl shrink-0">
+                  {/* Time Signature Badge */}
+                  <div className="flex flex-col items-center px-2 py-1 bg-amber-500/10 border border-amber-500/30 rounded-lg shrink-0">
+                    <span className="text-[8px] font-bold text-amber-500/70 uppercase tracking-wider">박자</span>
+                    <span className="text-base font-black text-amber-400 leading-tight">{region.timeSignature}</span>
+                  </div>
+                  <div className="w-px h-6 bg-white/10" />
+                  <div className="flex flex-col flex-1 px-1 min-w-0">
+                    <div className="flex justify-between items-center mb-0.5">
+                      <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider">BPM</span>
+                      <span className="text-[10px] font-mono font-bold text-amber-400">{bpm}</span>
+                    </div>
+                    <input type="range" min="40" max="200" step="5" value={bpm}
+                      onChange={(e) => setBpm(parseInt(e.target.value))}
+                      className="w-full accent-amber-500 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
+                  </div>
+                  <div className="w-px h-6 bg-white/10" />
+                  <button onClick={handlePlayToggle}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-xl font-bold text-xs md:text-sm transition-all shrink-0 shadow
+                      ${isPlaying
+                        ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40 hover:bg-rose-500/30'
+                        : 'bg-amber-500 text-slate-900 border border-amber-400 hover:bg-amber-400 shadow-amber-500/25'}`}>
+                    {isPlaying ? <><Square className="w-3.5 h-3.5" fill="currentColor" />정지</> : <><Play className="w-3.5 h-3.5" fill="currentColor" />재생</>}
+                  </button>
                 </div>
-                <input type="range" min="40" max="200" step="5" value={bpm}
-                  onChange={(e) => setBpm(parseInt(e.target.value))}
-                  className="w-full accent-amber-500 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
-              </div>
-              <div className="w-px h-6 bg-white/10" />
-              <button onClick={handlePlayToggle}
-                className={`flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-xl font-bold text-xs md:text-sm transition-all shrink-0 shadow
-                  ${isPlaying
-                    ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40 hover:bg-rose-500/30'
-                    : 'bg-amber-500 text-slate-900 border border-amber-400 hover:bg-amber-400 shadow-amber-500/25'}`}>
-                {isPlaying ? <><Square className="w-3.5 h-3.5" fill="currentColor" />정지</> : <><Play className="w-3.5 h-3.5" fill="currentColor" />재생</>}
-              </button>
-            </div>
 
-            {/* ── Rhythm Grid ── */}
-            <div className="bg-slate-950/60 p-3 rounded-xl border border-white/10 shadow-inner">
-              <RhythmGrid
-                tracks={region.tracks}
-                subdivision={region.subdivision || 4}
-                beatsPerMeasure={parseTimeSignature().beats}
-                currentStep={currentStep}
-              />
-            </div>
+                {/* ── Rhythm Grid ── */}
+                <div className="bg-slate-950/60 p-3 rounded-xl border border-white/10 shadow-inner shrink-0">
+                  <RhythmGrid
+                    tracks={region.tracks}
+                    subdivision={region.subdivision || 4}
+                    beatsPerMeasure={parseTimeSignature().beats}
+                    currentStep={currentStep}
+                  />
+                </div>
 
-            {/* ── Legend ── */}
-            <div className="flex items-center justify-center gap-4 text-[9px] text-slate-400 pt-0.5">
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-slate-500 opacity-30" /> 고스트
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-slate-400 opacity-70" /> 보통
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-3 h-3 rounded-full bg-slate-300 shadow-[0_0_6px_rgba(255,255,255,0.3)]" /> 강세
-              </span>
-            </div>
-
-            {/* ── Story Section (Always Full & Unclipped) ── */}
-            {region.story && (
-              <div className="space-y-1.5 pt-1">
+                {/* ── Legend ── */}
+                <div className="flex items-center justify-center gap-4 text-[9px] text-slate-400 pt-0.5 shrink-0">
+                  <span className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-slate-500 opacity-30" /> 고스트
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-slate-400 opacity-70" /> 보통
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-3 h-3 rounded-full bg-slate-300 shadow-[0_0_6px_rgba(255,255,255,0.3)]" /> 강세
+                  </span>
+                </div>
+              </>
+            ) : (
+              /* ── Story Tab Content ── */
+              <div className="space-y-2 pt-1">
                 <h4 className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                  문화적 배경 이야기
+                  문화적 배경 및 음악적 유산
                 </h4>
-                <div className="bg-slate-950/60 p-3.5 rounded-xl border border-white/10">
+                <div className="bg-slate-950/60 p-4 rounded-xl border border-white/10">
                   <p className="text-slate-300 text-xs md:text-sm leading-relaxed break-keep">
                     {region.story}
                   </p>
