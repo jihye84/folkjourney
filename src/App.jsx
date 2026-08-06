@@ -145,12 +145,16 @@ function App() {
       {/* Floating Header + Controls with dark gradient scrim */}
       <div className="absolute top-0 left-0 w-full p-3.5 md:p-6 pb-12 md:pb-16 bg-gradient-to-b from-slate-950/90 via-slate-950/40 to-transparent pointer-events-none z-10 flex justify-between items-start">
         <div className="pointer-events-auto">
-          <h1 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 drop-shadow-lg">
-            Folk Journey
-          </h1>
-          <p className="text-[10px] md:text-[11px] text-slate-400 font-medium mt-0.5 tracking-wide drop-shadow">
-            Explore the World through Musical Progressions & Rhythms
-          </p>
+          {!isWorldTour && (
+            <>
+              <h1 className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 drop-shadow-lg">
+                Folk Journey
+              </h1>
+              <p className="text-[10px] md:text-[11px] text-slate-400 font-medium mt-0.5 tracking-wide drop-shadow">
+                Explore the World through Musical Progressions & Rhythms
+              </p>
+            </>
+          )}
 
           {/* Mode Toggle & Control Buttons */}
           <div className="mt-2.5 md:mt-3 flex items-center gap-1.5 md:gap-2 flex-wrap">
@@ -176,24 +180,16 @@ function App() {
               </button>
             </div>
 
-            {/* World Tour Button */}
-            <button
-              onClick={() => setIsWorldTour(!isWorldTour)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 text-[11px] md:text-xs font-bold rounded-xl border backdrop-blur-xl transition-all shadow-xl
-                ${isWorldTour
-                  ? 'bg-slate-900/95 text-cyan-300 border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.35)] ring-1 ring-cyan-500/40'
-                  : 'bg-slate-900/90 text-slate-300 border-white/15 hover:bg-white/10'}`}
-            >
-              {isWorldTour ? (
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-                </span>
-              ) : (
+            {/* World Tour Button (Hidden during World Tour mode) */}
+            {!isWorldTour && (
+              <button
+                onClick={() => setIsWorldTour(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 text-[11px] md:text-xs font-bold rounded-xl border backdrop-blur-xl transition-all shadow-xl bg-slate-900/90 text-slate-300 border-white/15 hover:bg-white/10"
+              >
                 <Plane className="w-3.5 h-3.5 text-slate-400" />
-              )}
-              <span>세계 여행 {isWorldTour ? '중' : ''}</span>
-            </button>
+                <span>세계 여행</span>
+              </button>
+            )}
 
             {/* Shortcuts Guide Button */}
             <button

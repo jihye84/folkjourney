@@ -26,7 +26,7 @@ export function GlobeMap({ data, onRegionSelect, selectedRegionId, accentColor =
     if (globeEl.current) {
       globeEl.current.controls().autoRotate = true;
       globeEl.current.controls().autoRotateSpeed = 0.5;
-      globeEl.current.pointOfView({ altitude: 2.5 });
+      globeEl.current.pointOfView({ altitude: 3.5 });
     }
   }, []);
 
@@ -44,19 +44,19 @@ export function GlobeMap({ data, onRegionSelect, selectedRegionId, accentColor =
       const selectedItem = globeData.find(d => d.id === selectedRegionId);
       if (selectedItem && selectedItem.lat !== undefined && selectedItem.lng !== undefined) {
         globeEl.current.pointOfView(
-          { lat: selectedItem.lat, lng: selectedItem.lng, altitude: isMobile ? 2.4 : 2.0 },
+          { lat: selectedItem.lat, lng: selectedItem.lng, altitude: isMobile ? 3.5 : 3.0 },
           1400
         );
       }
     } else if (!selectedRegionId && globeEl.current) {
-      globeEl.current.pointOfView({ altitude: 2.5 }, 1000);
+      globeEl.current.pointOfView({ altitude: 3.5 }, 1000);
     }
   }, [selectedRegionId, globeData, isMobile]);
 
   const handleSelect = useCallback((point) => {
     onRegionSelectRef.current(point);
     if (globeEl.current) {
-      globeEl.current.pointOfView({ lat: point.lat, lng: point.lng, altitude: isMobile ? 2.4 : 2.0 }, 1000);
+      globeEl.current.pointOfView({ lat: point.lat, lng: point.lng, altitude: isMobile ? 3.5 : 3.0 }, 1000);
     }
   }, [isMobile]);
 
