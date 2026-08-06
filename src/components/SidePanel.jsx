@@ -238,7 +238,7 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
                           whileHover={{ scale: isPlaying ? 1 : 1.03, y: isPlaying ? 0 : -1 }}
                           whileTap={{ scale: isPlaying ? 1 : 0.97 }}
                           onClick={() => handlePlaySingleChord(chord, idx)}
-                          className={`flex-1 min-w-[62px] relative rounded-xl flex flex-col items-center justify-between p-1 bg-slate-800/90 transition-all duration-300 border overflow-hidden shrink-0 group
+                          className={`flex-1 min-w-[68px] relative rounded-xl flex flex-col items-center justify-between p-1 bg-slate-800/90 transition-all duration-300 border overflow-hidden shrink-0 group
                             ${isActive ? 'bg-slate-900 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] ring-1 ring-emerald-500/30 z-10'
                               : isSingle ? 'bg-slate-900 border-emerald-400 shadow-md ring-1 ring-emerald-400/30'
                               : 'bg-slate-800/80 border-slate-700/60 hover:border-slate-500'}
@@ -255,8 +255,8 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
                             </span>
                           </div>
 
-                          {/* Staff Box (Original Full Size Note Visibility) */}
-                          <div className="w-full bg-white rounded-md p-1 my-0.5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner h-[54px]">
+                          {/* Staff Box (Full Size & Unclipped Treble Clef) */}
+                          <div className="w-full bg-white rounded-md p-0.5 my-0.5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner h-[58px]">
                             <StaffNotation notes={getChordNotes(selectedKey, chord.numeral)} />
                           </div>
 
