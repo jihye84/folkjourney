@@ -26,7 +26,7 @@ export function GlobeMap({ data, onRegionSelect, selectedRegionId, accentColor =
     if (globeEl.current) {
       globeEl.current.controls().autoRotate = true;
       globeEl.current.controls().autoRotateSpeed = 0.5;
-      globeEl.current.pointOfView({ altitude: 2 });
+      globeEl.current.pointOfView({ altitude: 2.5 });
     }
   }, []);
 
@@ -44,23 +44,27 @@ export function GlobeMap({ data, onRegionSelect, selectedRegionId, accentColor =
       const selectedItem = globeData.find(d => d.id === selectedRegionId);
       if (selectedItem && selectedItem.lat !== undefined && selectedItem.lng !== undefined) {
         globeEl.current.pointOfView(
-          { lat: selectedItem.lat, lng: selectedItem.lng, altitude: isMobile ? 2.1 : 1.5 },
+          { lat: selectedItem.lat, lng: selectedItem.lng, altitude: isMobile ? 2.4 : 2.0 },
           1400
         );
       }
+    } else if (!selectedRegionId && globeEl.current) {
+      globeEl.current.pointOfView({ altitude: 2.5 }, 1000);
     }
   }, [selectedRegionId, globeData, isMobile]);
 
   const handleSelect = useCallback((point) => {
     onRegionSelectRef.current(point);
     if (globeEl.current) {
-      globeEl.current.pointOfView({ lat: point.lat, lng: point.lng, altitude: isMobile ? 2.1 : 1.5 }, 1000);
+      globeEl.current.pointOfView({ lat: point.lat, lng: point.lng, altitude: isMobile ? 2.4 : 2.0 }, 1000);
     }
   }, [isMobile]);
 
   const getTransform = () => {
     if (!selectedRegionId) return 'translate(0, 0)';
-    return isMobile ? 'translateY(-14vh)' : 'translateX(-220px)';
+    // On mobile: bottom sheet takes bottom 56vh -> remaining top visible area is 44vh (center @ 22vh). Shift from 50vh to 22vh = -26vh
+    // On desktop: side panel takes right 460px -> remaining left area center is shifted -230px
+    return isMobile ? 'translateY(-26vh)' : 'translateX(-230px)';
   };
 
   return (
