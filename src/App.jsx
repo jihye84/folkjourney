@@ -157,7 +157,7 @@ function App() {
           )}
 
           {/* Mode Toggle & Control Buttons */}
-          <div className="mt-2.5 md:mt-3 flex items-center gap-1.5 md:gap-2 flex-wrap">
+          <div className={`flex items-center gap-1.5 md:gap-2 flex-wrap transition-all duration-300 ${isWorldTour ? 'mt-11 md:mt-14' : 'mt-2.5 md:mt-3'}`}>
             {/* Mode Toggle */}
             <div className="inline-flex bg-slate-900/95 backdrop-blur-xl border border-white/15 rounded-xl overflow-hidden shadow-xl">
               <button
