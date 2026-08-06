@@ -126,7 +126,7 @@ export function SearchList({ data = [], onSelect, selectedId, accentColor = '#10
                     >
                       <div className="w-7 h-7 rounded-lg bg-slate-800 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-emerald-500/30 overflow-hidden">
                         {item.flag
-                          ? <img src={`/flags/${item.flag}.svg`} alt="" className="w-full h-full object-cover" />
+                          ? <img src={`${import.meta.env.BASE_URL}flags/${item.flag}.svg`} alt="" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                           : <Music className={`w-3.5 h-3.5 ${item.id === selectedId ? 'text-emerald-400' : 'text-slate-500 group-hover:text-emerald-400'}`} />}
                       </div>
                       <div className="min-w-0 flex-1">

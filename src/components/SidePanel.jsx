@@ -119,9 +119,10 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="h-8 shrink-0 flex items-center">
                 <img
-                  src={`/flags/${region.flag}.svg`}
+                  src={`${import.meta.env.BASE_URL}flags/${region.flag}.svg`}
                   alt={region.region}
                   className="h-full w-auto rounded border border-white/20 shadow"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
                 />
               </div>
               <div className="min-w-0">
