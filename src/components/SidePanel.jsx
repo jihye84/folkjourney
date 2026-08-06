@@ -238,7 +238,7 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
                           whileHover={{ scale: isPlaying ? 1 : 1.03, y: isPlaying ? 0 : -1 }}
                           whileTap={{ scale: isPlaying ? 1 : 0.97 }}
                           onClick={() => handlePlaySingleChord(chord, idx)}
-                          className={`flex-1 min-w-[62px] relative rounded-xl flex flex-col items-center justify-between p-1.5 transition-all duration-300 border min-h-[64px] max-h-[68px] overflow-hidden group
+                          className={`flex-1 min-w-[62px] relative rounded-xl flex flex-col items-center justify-between p-1 md:p-1.5 transition-all duration-300 border min-h-[74px] overflow-hidden group
                             ${isActive ? 'bg-slate-900 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] ring-1 ring-emerald-500/30 z-10'
                               : isSingle ? 'bg-slate-900 border-emerald-400 shadow-md ring-1 ring-emerald-400/30'
                               : 'bg-slate-800/80 border-slate-700/60 hover:border-slate-500'}
@@ -255,8 +255,8 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
                             </span>
                           </div>
 
-                          {/* Mini Staff Notation */}
-                          <div className="w-full flex items-center justify-center h-5 overflow-hidden shrink-0 scale-[0.52] transform origin-center my-0.5">
+                          {/* Staff Notation View */}
+                          <div className="w-full flex items-center justify-center shrink-0 scale-[0.68] transform origin-top my-0.5">
                             <StaffNotation notes={getChordNotes(selectedKey, chord.numeral)} />
                           </div>
 
