@@ -7,7 +7,7 @@ import { KeySelector } from './KeySelector';
 import { playChord, playProgression, stopAudio } from '../utils/audio';
 import { getChordNotes, getChordName } from '../utils/theory';
 
-export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onPlaybackFinished }) {
+export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onPlaybackFinished, onPlaybackStopped }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeChordIdx, setActiveChordIdx] = useState(-1);
   const [playingSingle, setPlayingSingle] = useState(-1);
@@ -95,6 +95,7 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
   const handlePlayAll = () => {
     if (isPlaying) {
       stopCurrentPlayback();
+      if (onPlaybackStopped) onPlaybackStopped();
     } else {
       startPlayAll();
     }

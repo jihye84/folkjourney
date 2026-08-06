@@ -97,6 +97,14 @@ function App() {
     }
   }, [isWorldTour, advanceWorldTour]);
 
+  // Callback when user manually stops playback (e.g. Stop button or Spacebar)
+  const handlePlaybackStopped = useCallback(() => {
+    stopWorldTourTimers();
+    if (isWorldTour) {
+      setIsWorldTour(false);
+    }
+  }, [isWorldTour]);
+
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -253,6 +261,7 @@ function App() {
           autoPlayToken={autoPlayToken}
           togglePlayToken={togglePlayToken}
           onPlaybackFinished={handlePlaybackFinished}
+          onPlaybackStopped={handlePlaybackStopped}
         />
       ) : (
         <RhythmPanel
@@ -261,6 +270,7 @@ function App() {
           autoPlayToken={autoPlayToken}
           togglePlayToken={togglePlayToken}
           onPlaybackFinished={handlePlaybackFinished}
+          onPlaybackStopped={handlePlaybackStopped}
           isWorldTour={isWorldTour}
         />
       )}

@@ -4,7 +4,7 @@ import { X, Play, Square, ChevronDown, ChevronUp } from 'lucide-react';
 import { RhythmGrid } from './RhythmGrid';
 import { playRhythm, stopRhythm } from '../utils/rhythmAudio';
 
-export function RhythmPanel({ region, onClose, autoPlayToken, togglePlayToken, onPlaybackFinished, isWorldTour = false }) {
+export function RhythmPanel({ region, onClose, autoPlayToken, togglePlayToken, onPlaybackFinished, onPlaybackStopped, isWorldTour = false }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(-1);
   const [bpm, setBpm] = useState(100);
@@ -106,6 +106,7 @@ export function RhythmPanel({ region, onClose, autoPlayToken, togglePlayToken, o
   const handlePlayToggle = () => {
     if (isPlaying) {
       stopCurrentRhythm();
+      if (onPlaybackStopped) onPlaybackStopped();
     } else {
       startRhythmPlay();
     }
