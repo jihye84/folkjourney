@@ -42,6 +42,72 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
   }, [region?.id]);
 
   useEffect(() => {
+    return () => { stopCurrentPlayback(); };
+  }, []);
+
+  // Listen for togglePlayToken (Space key)
+  useEffect(() => {
+    if (togglePlayToken) {
+      handlePlayAll();
+    }
+  }, [togglePlayToken]);
+
+  // Handle autoPlay on region selection / token update
+  useEffect(() => {
+    if (autoPlayToken && region) {
+      const timer = setTimeout(() => {
+        startPlayAll();
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [region?.id, autoPlayToken]);
+
+  const getActiveNotes = () => {
+    if (!region) return [];
+    const idx = activeChordIdx >= 0 ? activeChordIdx : playingSingle >= 0 ? playingSingle : -1;
+    if (idx < 0 || idx >= region.chords.length) return [];
+    return getChordNotes(selectedKey, region.chords[idx].numeral);
+  };
+
+  const startPlayAll = async () => {
+    stopCurrentPlayback(); // Ensure any prior playback & timers are cleared
+    if (!region || !region.chords) return;
+
+    setIsPlaying(true);
+    setActiveChordIdx(0);
+
+    const chordsToPlay = region.chords.map(c => ({
+      ...c, notes: getChordNotes(selectedKey, c.numeral)
+    }));
+
+    const totalDuration = await playProgression(
+      chordsToPlay, (idx) => setActiveChordIdx(idx), bpm, playStyle
+    );
+
+    playbackTimerRef.current = setTimeout(() => {
+      setIsPlaying(false);
+      setActiveChordIdx(-1);
+      playbackTimerRef.current = null;
+      if (onPlaybackFinished) onPlaybackFinished();
+    }, totalDuration * 1000);
+  };
+
+  const handlePlayAll = () => {
+    if (isPlaying) {
+      stopCurrentPlayback();
+    } else {
+      startPlayAll();
+    }
+  };
+
+  const handlePlaySingleChord = async (chord, idx) => {
+    if (isPlaying) return;
+    setPlayingSingle(idx);
+    await playChord(getChordNotes(selectedKey, chord.numeral));
+    setTimeout(() => setPlayingSingle(-1), 1000);
+  };
+
+  useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
