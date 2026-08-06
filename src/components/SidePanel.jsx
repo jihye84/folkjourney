@@ -255,8 +255,8 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
                             </span>
                           </div>
 
-                          {/* Mini Staff Box (Ends Exactly after Staff Lines) */}
-                          <div className="w-full bg-white rounded-md p-1 my-0.5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner h-[38px]">
+                          {/* Staff Box (Original Full Size Note Visibility) */}
+                          <div className="w-full bg-white rounded-md p-1 my-0.5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner h-[54px]">
                             <StaffNotation notes={getChordNotes(selectedKey, chord.numeral)} />
                           </div>
 
