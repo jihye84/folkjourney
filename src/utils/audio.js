@@ -46,6 +46,18 @@ export const playChord = async (notes, duration = "2n") => {
   synth.triggerAttackRelease(notes, duration);
 };
 
+export const playSingleNote = async (note, duration = "8n") => {
+  if (!initialized) {
+    await initAudio();
+  }
+  if (Tone.context.state !== 'running') {
+    await Tone.context.resume();
+  }
+  if (synth) {
+    synth.triggerAttackRelease(note, duration);
+  }
+};
+
 export const playProgression = async (chords, onChordPlay, bpm = 90, playStyle = 'block') => {
   if (!initialized) {
     await initAudio();

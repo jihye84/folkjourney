@@ -4,7 +4,7 @@ import { X, Play, Square, Volume2, ChevronDown, ChevronUp } from 'lucide-react';
 import { StaffNotation } from './StaffNotation';
 import { PianoKeyboard } from './PianoKeyboard';
 import { KeySelector } from './KeySelector';
-import { playChord, playProgression, stopAudio } from '../utils/audio';
+import { playChord, playProgression, stopAudio, playSingleNote } from '../utils/audio';
 import { getChordNotes, getChordName } from '../utils/theory';
 
 export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onPlaybackFinished, onPlaybackStopped }) {
@@ -281,7 +281,7 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
 
               {/* Piano Keyboard */}
               <div className="bg-slate-950 rounded-xl border border-white/10 p-2 shadow-inner overflow-hidden">
-                <PianoKeyboard activeNotes={getActiveNotes()} />
+                <PianoKeyboard activeNotes={getActiveNotes()} onKeyClick={(note) => playSingleNote(note)} />
               </div>
 
               {/* Full Cultural Story Card (PC Desktop) */}
@@ -388,7 +388,7 @@ export function SidePanel({ region, onClose, autoPlayToken, togglePlayToken, onP
 
                   {/* Piano Keyboard */}
                   <div className="bg-slate-950 rounded-xl border border-white/10 p-1.5 shadow-inner overflow-hidden shrink-0">
-                    <PianoKeyboard activeNotes={getActiveNotes()} />
+                    <PianoKeyboard activeNotes={getActiveNotes()} onKeyClick={(note) => playSingleNote(note)} />
                   </div>
                 </div>
               ) : (
