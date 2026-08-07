@@ -57,18 +57,33 @@ export const PianoKeyboard = ({ activeNotes = [], onKeyClick }) => {
 
         {/* White keys — each takes equal % of container width */}
         {whiteKeys.map((wk, i) => {
-          const isActive = activeSet.has(wk.name) || clickedKey === wk.name;
+          const isChordActive = activeSet.has(wk.name);
+          const isUserClicked = clickedKey === wk.name;
+          const isActive = isChordActive || isUserClicked;
+
           return (
             <div
               key={wk.name}
               onClick={() => handleKeyTouch(wk.name)}
-              className={`absolute top-0 bottom-0 border-r border-slate-700/50 flex flex-col justify-end pb-1.5 items-center transition-colors duration-200 cursor-pointer active:bg-amber-200
-                ${isActive ? 'bg-amber-100 shadow-[inset_0_-15px_30px_rgba(251,191,36,0.6)]' : 'bg-white hover:bg-slate-100'}
+              className={`absolute top-0 bottom-0 border-r border-slate-700/50 flex flex-col justify-end pb-1.5 items-center transition-colors duration-150 cursor-pointer active:bg-emerald-300
+                ${isUserClicked
+                  ? 'bg-emerald-200 shadow-[inset_0_-15px_30px_rgba(16,185,129,0.75)] z-10'
+                  : isChordActive
+                    ? 'bg-amber-100 shadow-[inset_0_-15px_30px_rgba(251,191,36,0.6)]'
+                    : 'bg-white hover:bg-slate-100'}
                 ${i === totalWhite - 1 ? 'border-r-0' : ''}
               `}
               style={{ left: `${i * keyWidthPct}%`, width: `${keyWidthPct}%` }}
             >
-              <div className={`w-1.5 h-1.5 rounded-full transition-opacity duration-200 ${isActive ? 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.8)] opacity-100' : 'opacity-0'}`} />
+              <div
+                className={`w-1.5 h-1.5 rounded-full transition-opacity duration-150 ${
+                  isUserClicked
+                    ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,1)] opacity-100'
+                    : isChordActive
+                      ? 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.8)] opacity-100'
+                      : 'opacity-0'
+                }`}
+              />
             </div>
           );
         })}
@@ -77,7 +92,9 @@ export const PianoKeyboard = ({ activeNotes = [], onKeyClick }) => {
         {PIANO_RANGE.map((bk, i) => {
           if (bk.type === 'white') return null;
           const whiteIndex = PIANO_RANGE.slice(0, i).filter(k => k.type === 'white').length;
-          const isActive = activeSet.has(bk.name) || clickedKey === bk.name;
+          const isChordActive = activeSet.has(bk.name);
+          const isUserClicked = clickedKey === bk.name;
+          const isActive = isChordActive || isUserClicked;
 
           return (
             <div
@@ -86,15 +103,27 @@ export const PianoKeyboard = ({ activeNotes = [], onKeyClick }) => {
                 e.stopPropagation();
                 handleKeyTouch(bk.name);
               }}
-              className={`absolute top-0 h-12 rounded-b-md z-10 border-x border-b flex justify-center items-end pb-1 transition-colors duration-200 cursor-pointer active:bg-amber-700
-                ${isActive ? 'bg-amber-600 border-amber-700 shadow-[0_5px_20px_rgba(245,158,11,0.7)]' : 'bg-slate-800 border-slate-900 hover:bg-slate-700'}
+              className={`absolute top-0 h-12 rounded-b-md z-10 border-x border-b flex justify-center items-end pb-1 transition-colors duration-150 cursor-pointer active:bg-emerald-600
+                ${isUserClicked
+                  ? 'bg-emerald-500 border-emerald-400 shadow-[0_5px_20px_rgba(16,185,129,0.9)] z-20'
+                  : isChordActive
+                    ? 'bg-amber-600 border-amber-700 shadow-[0_5px_20px_rgba(245,158,11,0.7)]'
+                    : 'bg-slate-800 border-slate-900 hover:bg-slate-700'}
               `}
               style={{
                 left: `${whiteIndex * keyWidthPct - blackWidthPct / 2}%`,
                 width: `${blackWidthPct}%`
               }}
             >
-              <div className={`w-1 h-1 rounded-full transition-opacity duration-200 ${isActive ? 'bg-amber-200 shadow-[0_0_8px_rgba(252,211,77,1)] opacity-100' : 'opacity-0'}`} />
+              <div
+                className={`w-1 h-1 rounded-full transition-opacity duration-150 ${
+                  isUserClicked
+                    ? 'bg-emerald-200 shadow-[0_0_10px_rgba(16,185,129,1)] opacity-100'
+                    : isChordActive
+                      ? 'bg-amber-200 shadow-[0_0_8px_rgba(252,211,77,1)] opacity-100'
+                      : 'opacity-0'
+                }`}
+              />
             </div>
           );
         })}
