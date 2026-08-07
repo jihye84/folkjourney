@@ -19,8 +19,8 @@ const getRootMidi = (keyName) => {
 
   const index = CHROMA_SHARP.indexOf(normalized);
 
-  // Keep roots between C3 (48) and B3 (59) so all notes fit nicely on the staff when transposed +1 octave
-  return 48 + index;
+  // Set base root to C4 (MIDI 60, Middle C) for exact pitch alignment with Treble Clef staff
+  return 60 + index;
 };
 
 // Define Roman Numeral to semitone intervals from root
@@ -92,9 +92,8 @@ export const getChordNotes = (keyName, romanNumeral) => {
   let octaveShift = 0;
   const highestNoteMidi = rootMidi + intervals[intervals.length - 1];
 
-  // If the highest note exceeds G4 (67), it will visually exceed G5 (transposed +1 octave for treble).
-  // This causes SVG clipping and awkward voice leading. We drop the entire chord by one octave.
-  if (highestNoteMidi > 67) {
+  // Keep notes within C4 (60) - G5 (79) range for clean treble clef display
+  if (highestNoteMidi > 79) {
     octaveShift = -12;
   }
 

@@ -18,8 +18,8 @@ const getStaffY = (letter, octave) => {
   const noteTotalStep = (octave * 7) + lIdx;
   const E4TotalStep = (4 * 7) + 2; // Step index of E4 (Bottom Line 1) = 30
   
-  // Visually shift octave by +1 (e.g., C3 -> Middle C C4 @ y=60, E3 -> Bottom Line E4 @ y=50)
-  const stepDiff = (noteTotalStep + 7) - E4TotalStep;
+  // Calculate exact Y placement relative to E4 (Bottom Line 1 @ y=50)
+  const stepDiff = noteTotalStep - E4TotalStep;
   
   return 50 - (stepDiff * 5);
 };

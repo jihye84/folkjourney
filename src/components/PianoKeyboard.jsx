@@ -15,10 +15,12 @@ const KEYS = [
   { note: 'B', type: 'white' },
 ];
 
-// 2 octaves (C3-B4) — fits comfortably in the panel without scrolling
+// 3 full octaves (C3-C6) — fits all treble staff chord notes (C4-G5) with exact visual & audio pitch alignment
 const PIANO_RANGE = [
   ...KEYS.map(k => ({ ...k, name: `${k.note}3` })),
   ...KEYS.map(k => ({ ...k, name: `${k.note}4` })),
+  ...KEYS.map(k => ({ ...k, name: `${k.note}5` })),
+  { note: 'C', type: 'white', name: 'C6' },
 ];
 
 const equivalentNotes = {
