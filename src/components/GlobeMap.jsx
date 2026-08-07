@@ -22,6 +22,8 @@ export function GlobeMap({ data, onRegionSelect, selectedRegionId, accentColor =
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const isMobile = windowSize.width < 768;
+
   useEffect(() => {
     if (globeEl.current) {
       globeEl.current.controls().autoRotate = true;
@@ -35,8 +37,6 @@ export function GlobeMap({ data, onRegionSelect, selectedRegionId, accentColor =
       globeEl.current.controls().autoRotate = !selectedRegionId;
     }
   }, [selectedRegionId]);
-
-  const isMobile = windowSize.width < 768;
 
   // Smoothly rotate globe camera to center selected country whenever selectedRegionId changes
   useEffect(() => {
